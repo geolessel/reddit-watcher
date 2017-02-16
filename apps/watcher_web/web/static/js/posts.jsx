@@ -11,6 +11,13 @@ class Posts extends React.Component {
   }
 
   componentDidMount() {
+    this.props.channel.on("new-post", payload => {
+      const posts = Array(payload).concat(this.state.posts)
+      this.setState({ posts })
+    })
+    this.props.channel.join().receive("ok", resp => {
+      console.log("listening for new posts")
+    })
     $.get("/posts", response => {
       this.setState({posts: response.data})
     })

@@ -4,6 +4,8 @@ defmodule Searcher.Post do
   import Ecto.Changeset
   alias Searcher.Repo
 
+  @derive {Poison.Encoder, except: [:__meta__]}
+
   schema "posts" do
     field :title, :string
     field :reddit_id, :string

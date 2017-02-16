@@ -3,6 +3,7 @@ defmodule WatcherWeb.UserSocket do
 
   ## Channels
   # channel "room:*", WatcherWeb.RoomChannel
+  channel "posts", WatcherWeb.PostsChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

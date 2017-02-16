@@ -50,6 +50,12 @@ defmodule Searcher.Server do
             child
             |> Map.get("data")
             |> Searcher.Post.insert_new()
+            |> case do
+              {:ok, post} ->
+                Logger.debug "NEW POST!"
+                WatcherWeb.Endpoint.broadcast!("posts", "new-post", post)
+              {:existing, _post} -> nil
+            end
           end)
           @interval
         {:error, _response} ->
