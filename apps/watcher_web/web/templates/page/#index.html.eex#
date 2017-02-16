@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h1>Posts</h1>
+    <ul>
+      <%= for post <- @posts do %>
+        <li>
+          <h4><%= link(post.title, to: ost.url, data: [toggle: "collapse"]) %></h4>
+          <p href="##{post.reddit_id}"><%= raw(post.html) %></p>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
