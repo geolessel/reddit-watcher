@@ -18,8 +18,8 @@ defmodule Searcher.Server do
     GenServer.cast(__MODULE__, :titles)
   end
 
-  def go do
-    GenServer.cast(__MODULE__, :go)
+  def run do
+    GenServer.cast(__MODULE__, :run)
   end
 
   def stop do
@@ -31,6 +31,7 @@ defmodule Searcher.Server do
   # └──────────────────┘
 
   def init(state) do
+    __MODULE__.run
     {:ok, state}
   end
 
@@ -38,7 +39,7 @@ defmodule Searcher.Server do
     {:reply, Process.cancel_timer(timer), nil}
   end
 
-  def handle_cast(:go, _timer) do
+  def handle_cast(:run, _timer) do
     interval =
       case Searcher.search("mechmarket", "ergodox", 10) do
         {:ok, response} ->
@@ -62,7 +63,7 @@ defmodule Searcher.Server do
           Logger.debug "Response error"
           @retry_interval
       end
-    timer = Process.send_after(__MODULE__, :go, interval)
+    timer = Process.send_after(__MODULE__, :run, interval)
     {:noreply, timer}
   end
 
@@ -82,8 +83,8 @@ defmodule Searcher.Server do
     {:noreply, nil}
   end
 
-  def handle_info(:go, _state) do
-    GenServer.cast(__MODULE__, :go)
+  def handle_info(:run, _state) do
+    GenServer.cast(__MODULE__, :run)
     {:noreply, nil}
   end
   
