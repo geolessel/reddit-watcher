@@ -7,13 +7,17 @@ defmodule Searcher do
   plug Tesla.Middleware.BaseUrl, "https://reddit.com/r"
   plug Tesla.Middleware.JSON
 
+  require Logger
+
   def search(subreddit, term, limit \\ 10) do
-    get(
+    url = 
       subreddit <>
       "/search.json?q=" <> term <>
       "&limit=" <> Integer.to_string(limit) <>
       "&sort=new&restrict_sr=on&raw_json=1"
-    )
+    Logger.debug("Getting #{url}")
+
+    get(url)
     |> process_response()
   end
 
